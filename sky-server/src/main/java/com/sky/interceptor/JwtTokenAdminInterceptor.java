@@ -6,6 +6,7 @@ import com.sky.properties.JwtProperties;
 import com.sky.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpStatus;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
@@ -47,18 +48,19 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
         //1、从请求头中获取令牌
         String token = request.getHeader(jwtProperties.getAdminTokenName());
 
+
         //2、校验令牌
         try {
             log.info("jwt校验:{}", token);
             Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
             Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());
             BaseContext.setCurrentId(empId);//将当前员工id存入ThreadLocal中
-            log.info("当前员工id：", empId);
+            log.info("当前员工id:" + empId);
             //3、通过，放行
             return true;
         } catch (Exception ex) {
-            //4、不通过，响应401状态码
-            response.setStatus(401);
+            //4、不通过，响应401状态码（未登录）；其实不需要判断令牌是否存在，如果不存在抛异常，也是走这里（未登录）。
+            response.setStatus(HttpStatus.SC_UNAUTHORIZED);
             return false;
         }
     }
