@@ -1,6 +1,7 @@
 package com.sky.controller.admin;
 
 import com.sky.constant.JwtClaimsConstant;
+import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
@@ -29,7 +30,8 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
     @Autowired
-    private JwtProperties jwtProperties;
+    private JwtProperties jwtProperties;//配置属性类对象，将配置文件中的属性值封装到一个 Java 对象中
+    //也可以直接使用@Value注解来获取配置文件中的属性值
 
     /**
      * 登录
@@ -45,12 +47,16 @@ public class EmployeeController {
 
         //登录成功后，生成jwt令牌
         Map<String, Object> claims = new HashMap<>();
-        claims.put(JwtClaimsConstant.EMP_ID, employee.getId());
+        claims.put(JwtClaimsConstant.EMP_ID, employee.getId());//jwt的有效载荷 员工id
+
         String token = JwtUtil.createJWT(
                 jwtProperties.getAdminSecretKey(),
                 jwtProperties.getAdminTtl(),
                 claims);
 
+        //以前是通过new对象和set方法来创建对象
+        //现在使用建造者模式(builder设计模式)来创建对象，需要在类上添加@Builder注解
+        //核心特点：链式调用
         EmployeeLoginVO employeeLoginVO = EmployeeLoginVO.builder()
                 .id(employee.getId())
                 .userName(employee.getUsername())
@@ -70,5 +76,19 @@ public class EmployeeController {
     public Result<String> logout() {
         return Result.success();
     }
+
+    /**
+     * 新增员工
+     *
+     * @param employeeDTO
+     * @return
+     */
+    @PostMapping
+    public Result<String> save(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("新增员工：" + employeeDTO);
+        employeeService.save(employeeDTO);
+        return Result.success();
+    }
+
 
 }

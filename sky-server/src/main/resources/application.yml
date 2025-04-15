@@ -3,7 +3,7 @@ server:
 
 spring:
   profiles:
-    active: dev
+    active: dev # 设置当前使用的配置文件
   main:
     allow-circular-references: true
   datasource:
@@ -34,6 +34,6 @@ sky:
     # 设置jwt签名加密时使用的秘钥
     admin-secret-key: itcast
     # 设置jwt过期时间
-    admin-ttl: 7200000
+    admin-ttl: 259200000
     # 设置前端传递过来的令牌名称
     admin-token-name: token

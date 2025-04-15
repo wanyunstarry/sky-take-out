@@ -22,6 +22,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 @Slf4j
 public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
+    //拦截器对象
     @Autowired
     private JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
 
@@ -32,25 +33,31 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
      */
     protected void addInterceptors(InterceptorRegistry registry) {
         log.info("开始注册自定义拦截器...");
+        //注册自定义拦截器对象
         registry.addInterceptor(jwtTokenAdminInterceptor)
-                .addPathPatterns("/admin/**")
-                .excludePathPatterns("/admin/employee/login");
+                .addPathPatterns("/admin/**")//设置拦截器拦截的请求路径（/admin下的任意级路径）
+                .excludePathPatterns("/admin/employee/login");//设置不拦截的请求路径
     }
 
     /**
      * 通过knife4j生成接口文档
+     *
      * @return
      */
     @Bean
     public Docket docket() {
+        log.info("准备生成接口文档...");
+        //设置接口文档相关信息
         ApiInfo apiInfo = new ApiInfoBuilder()
                 .title("苍穹外卖项目接口文档")
                 .version("2.0")
-                .description("苍穹外卖项目接口文档")
+                .description("苍穹外卖项目接口文档")//描述信息
                 .build();
+
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo)
                 .select()
+                //指定生成接口需要扫描的包
                 .apis(RequestHandlerSelectors.basePackage("com.sky.controller"))
                 .paths(PathSelectors.any())
                 .build();
@@ -58,10 +65,13 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     }
 
     /**
-     * 设置静态资源映射
+     * 设置静态资源映射，否则接口文档页面无法访问
+     * 如果不设置，springmvc认为请求的是某个controller，而不是静态资源
+     *
      * @param registry
      */
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        log.info("开始设置静态资源映射...");
         registry.addResourceHandler("/doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
