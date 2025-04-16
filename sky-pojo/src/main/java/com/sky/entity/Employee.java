@@ -18,9 +18,9 @@ public class Employee implements Serializable {
 
     private Long id;
 
-    private String username;
+    private String username;//用户名/账户名必须唯一
 
-    private String name;
+    private String name;//员工姓名
 
     private String password;
 

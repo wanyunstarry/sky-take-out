@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -20,10 +21,10 @@ public class Category implements Serializable {
     //类型: 1菜品分类 2套餐分类
     private Integer type;
 
-    //分类名称
+    //分类名称必须是唯一的
     private String name;
 
-    //顺序
+    //用于分类数据的排序
     private Integer sort;
 
     //分类状态 0标识禁用 1表示启用
