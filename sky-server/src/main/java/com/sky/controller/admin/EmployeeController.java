@@ -99,4 +99,17 @@ public class EmployeeController {
         return Result.success(pageResult);
     }
 
+    /**
+     * 启用或禁用员工账号
+     * Result的泛型不是强制的；在本项目中，针对查询类操作，要返回data数据，这时候加上泛型；而对于非查询类型操作，就不需要了，因为data往往是null
+     *
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    public Result startorstop(Long id, @PathVariable Integer status) {
+        log.info("启用或禁用员工账号：id={},status={}", id, status);
+        employeeService.startorstop(id, status);
+        return Result.success();
+    }
+
 }

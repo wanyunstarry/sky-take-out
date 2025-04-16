@@ -111,4 +111,23 @@ public class EmployeeServiceImpl implements EmployeeService {
         return new PageResult(total, records);
     }
 
+    /**
+     * 启用或禁用员工账号
+     *
+     * @param id
+     * @param status
+     */
+    public int startorstop(Long id, Integer status) {
+        Employee employee = Employee.builder()
+                .id(id)
+                .status(status)
+                .updateTime(LocalDateTime.now())
+                .updateUser(BaseContext.getCurrentId())
+                .build();
+
+        //为了通用性，后面更新别的操作可以继续用这个方法，最好用employee封装
+        //否则你这里写修改status的mapper方法，修改员工信息的时候还要写一个方法
+        return employeeMapper.update(employee);
+    }
+
 }
