@@ -130,4 +130,34 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeMapper.update(employee);
     }
 
+    /**
+     * 根据id查询员工
+     *
+     * @param id
+     * @return
+     */
+    public Employee getById(Long id) {
+        //这里不应该传employee全部数据给前端，应该只传前端回显的字段
+        //可以自己加一个vo然后把数据库拿出来的employee塞到VO里面
+        Employee employee = employeeMapper.getById(id);
+        employee.setPassword("****");
+        return employee;
+    }
+
+    /**
+     * 编辑员工信息
+     *
+     * @param employeeDTO
+     * @return
+     */
+    public int update(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO, employee);
+
+        //设置一下employee的其他属性值
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        return employeeMapper.update(employee);
+    }
+
 }
