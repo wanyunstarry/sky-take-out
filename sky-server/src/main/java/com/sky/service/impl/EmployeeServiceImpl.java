@@ -79,10 +79,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         //设置一下employee的其他属性值
         employee.setStatus(StatusConstant.ENABLE);
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+//        employee.setCreateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setCreateUser(BaseContext.getCurrentId());
+//        employee.setUpdateUser(BaseContext.getCurrentId());
 
         //设置默认密码
         String password = DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes());
@@ -121,8 +121,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = Employee.builder()
                 .id(id)
                 .status(status)
-                .updateTime(LocalDateTime.now())
-                .updateUser(BaseContext.getCurrentId())
+//                 .updateTime(LocalDateTime.now())
+//                 .updateUser(BaseContext.getCurrentId())
                 .build();
 
         //为了通用性，后面更新别的操作可以继续用这个方法，最好用employee封装
@@ -154,9 +154,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO, employee);
 
-        //设置一下employee的其他属性值
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+//         设置一下employee的其他属性值
+//         employee.setUpdateTime(LocalDateTime.now());
+//         employee.setUpdateUser(BaseContext.getCurrentId());
         return employeeMapper.update(employee);
     }
 
